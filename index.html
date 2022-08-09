@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        #Maindiv{
+           
+            width: 500px;
+            margin-bottom: 15px;
+            box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+        }
+        #Maindiv div{
+            display: flex;
+            column-gap: 30px;
+        }
+    </style>
+</head>
+<body>
+    <button>Top 10 comments</button>
+    <button>Latest 10 comments</button>
+    <div id="ResultDiv"></div>
+</body>
+</html>
+<script>
+
+const ResultDiv= document.getElementById("ResultDiv");
+
+async function ResultData(){
+    try {
+        let response = await fetch(
+            'https://jsonmock.hackerrank.com/api/articles?page=1'
+        )
+
+        let data =await response.json();
+        var Data=data.data
+        console.log("data", Data)
+        AppendData(Data)
+        
+    } catch (error) {
+        console.log("Error", error)
+    }
+}
+ResultData()
+
+
+
+const AppendData= (Data)=>{
+    ResultDiv.innerHTML=null;
+    Data.forEach(el => {
+        console.log(el)
+
+        let Divmain = document.createElement("div")
+        Divmain.setAttribute("id", "Maindiv")
+      
+        let Div1 = document.createElement("div")
+        let img= document.createElement("img")
+        img.width="150"
+        img.height="150"
+        let H1= document.createElement("h1")
+        H1.innerHTML=`${el.author}`
+        img.src='https://cdn.pixabay.com/photo/2016/08/20/05/38/avatar-1606916__340.png'
+
+        let H2= document.createElement("h1")
+        H2.innerHTML=`${el.title}`
+        let Div2 = document.createElement("div")
+
+        let H3= document.createElement("h1")
+        H3.innerHTML=`${el.num_comments}`
+
+
+        
+        Div1.append(img,H1)
+        Div2.append(H3)
+
+        Divmain.append(Div1, H2, Div2)
+        ResultDiv.append(Divmain)
+
+    });
+}
+
+
+</script>
+
+
